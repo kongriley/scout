@@ -14,7 +14,7 @@
     <title>TKO Scouting</title>
   </head>
   <body>
-    <h1 class="text-center m-3">In progress - check back later.</h1>
+    <h1 class="text-center m-3">Scouting sheet</h1>
 
     <form id="info" class="p-3">
       <div class="form-row">
@@ -29,10 +29,27 @@
         </div>
         <div class="form-group col-md">
           <!-- maybe radio? -->
-          <select id="inputState" class="form-control">
-            <option selected>Alliance</option>
+          <select class="form-control">
+            <option selected disabled hidden value="">Alliance</option>
             <option>Red</option>
             <option>Blue</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md">
+          <select class="form-control">
+            <option selected disabled hidden value="">Starting HAB level</option>
+            <option>1</option>
+            <option>2</option>
+          </select>
+        </div>
+        <div class="form-group col-md">
+          <select class="form-control">
+            <option selected disabled hidden value="">Robot preload</option>
+            <option>Hatch</option>
+            <option>Cargo</option>
+            <option>None</option>
           </select>
         </div>
       </div>
@@ -41,21 +58,55 @@
           <input type="text" class="form-control" placeholder="Comments">
         </div>
       </div>
-      <button type="submit" class="btn btn-success w-100" onclick="submit()">Generate QR code</button>
     </form>
-    <p id="yeet"></p>
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-success w-100 mx-3" onclick="submit()" data-toggle="modal" data-target="#exampleModal">Generate QR code</button>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">QR code</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex justify-content-center" id="qrcode"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="clear()">New match</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script>
       function submit() {
-        var forms = document.getElementsByClassName("form-control form-check-label");
+        var forms = document.getElementsByClassName("form-control");
+        console.log("yeeeeeet");
+        var t = " ";
         for (var i = 0; i < forms.length; i++) {
-          document.getElementById("yeet").innerHTML += forms[i].value+"<br>";
+          t += forms[i].value+"\\";
         }
+        display(t);
+      }
+
+      function clear() {
+        var forms = document.getElementsByClassName("form-control");
+        for (var i = 0; i < forms.length; i++) {
+          forms[i].value = "";
+        }
+      }
+
+      var qrcode = new QRCode("qrcode");
+      function display(text) {
+        qrcode.makeCode(text);
       }
     </script>
   </body>
